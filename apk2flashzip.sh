@@ -31,7 +31,8 @@ cpfile() {
   NAME="$1"
   OUTNAME=$(echo "$NAME" | sedpipe)
   mkdir -p "$TMP/$(dirname $OUTNAME)"
-  cat "$SELF/$NAME" | sedpipe > "$TMP/$OUTNAME"
+  echo "'$SELF/template/$NAME' -> '$TMP/$OUTNAME'"
+  cat "$SELF/template/$NAME" | sedpipe > "$TMP/$OUTNAME"
   chmod 755 "$TMP/$OUTNAME"
 }
 
@@ -39,9 +40,10 @@ echo "Turning $APK into $ZIP (id='$APKID', display='$APKDISPLAYNAME')"
 
 TMP=$(mktemp -d)
 
-for f in META-INF/com/google/android/update-binary 08-APPID.sh; do
+for f in META-INF/com/google/android/update-binary 80-APPID.sh; do
   cpfile "$f"
 done
+cp -v "$APK" "$TMP/$APKID.apk"
 
 cd "$TMP"
 zip -r "$ZIP" .
