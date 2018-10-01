@@ -18,10 +18,10 @@ fi
 APK=$(readlink -f "$APK")
 ZIP=$(readlink -f "$ZIP")
 
-NEEDLE='\.\.\.\.\.a\.p\.p\.l\.i\.c\.a\.t\.i\.o\.n\.\.\.\.\.'
-REGEX='\.\.\.\.\.a\.p\.p\.l\.i\.c\.a\.t\.i\.o\.n\.\.\.\.\.((([^.]\.?)+(\.\.\.)?)+)\.\.\.\.\.'
+NEEDLE='\.\.\.\.\.m\.a\.n\.i\.f\.e\.s\.t\.\.\.\.\.'
+REGEX='\.\.\.\.\.m\.a\.n\.i\.f\.e\.s\.t\.\.\.\.\.((([^.]\.?)+(\.\.\.)?)+)\.\.\.\.\.'
 APKID=$(unzip -p "$APK" AndroidManifest.xml | sed -r "s|[^a-zA-Z0-9]|.|g" | grep "$NEEDLE" | sed -r "s|.*$REGEX.*|\1|g" | sed -r "s|\.([^.])|\1|g" | sed "s|\.\.|.|g")
-APKDISPLAYNAME=$(echo "$APKID" | sed "s|\.||g")
+APKDISPLAYNAME=$(echo "$APKID" | sed -r "s|.+\.([^.]+)$|\1|g")
 
 sedpipe() {
   sed "s|APPID|$APKID|g" | sed "s|APPDISPLAYNAME|$APKDISPLAYNAME|g"
